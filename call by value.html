@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call by value가 전달되는 과정</title>
+    <style>
+        body {
+            background-color: lightgray;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            font-style: italic;
+            border: 2px solid darkblue;
+            border-radius: 10px;
+            background-color: rgb(195, 184, 207);
+            text-align: center;
+            padding: 10px;
+        }
+
+        iframe {
+            width: 800px;
+            height: 500px;
+            background-color: blanchedalmond;
+        }
+
+        button {
+            width: 300px;
+            height: 100px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .code-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .code {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid black;
+        }
+        #code1{
+            color: aliceblue;
+            background-size: cover;
+            background-image: url(data:image/jpeg;base64,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) ;
+            background-repeat: no-repeat;
+        }
+        
+        #c2{
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Call by value가 전달되는 과정</h1>
+</header>
+
+<div class="code-container">
+    <div class="code">
+        <iframe src="https://pythontutor.com/cpp.html#mode=edit" frameborder="0" width="100%" height="500"></iframe>
+        
+    </div>
+
+<div class="code" id="code1" >
+    <h2>이 코드를 옆 화면에 복사하여 동작 원리를 알아봅시다</h2>
+<pre>
+<p id="c1" >
+#include&lt;iostream&gt;
+using namespace std;
+int main() {
+int x;
+int* ptr = &amp;x;
+x = 30;
+cout &lt;&lt;x;
+cout &lt;&lt; *ptr;
+}
+
+</p>
+</pre>
+        <button onclick="explain()">자세한 설명을 보고싶다면 클릭하세요</button>
+    </div>
+
+    <div id="code2" style="display: none;">
+        <pre>
+            <p id="c2">
+포인터 선언 후, 포인터는 x의 주소를 가리키게 된다.<br>
+여기서, 값을 출력할 때 주소 연산자인 &amp;를 사용하면<br> <br>스택에 들어있는 x의 주소를,<br>
+역참조 연산자인 *을 사용하면 <br><br>x의 주소 안에 들어있는 30이라는 값을 반환한다.<br>
+            </p>
+        </pre>
+   
+</div>
+
+
+<script>
+    function explain(){
+        document.getElementById("code1").innerHTML = document.getElementById("code2").innerHTML;
+    }
+</script>
+</body>
+</ht
